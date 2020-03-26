@@ -1,0 +1,463 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:scrollbars="vertical"
+    android:fadingEdge="vertical"
+    android:id="@+id/sv">
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="1">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        tools:layout_editor_absoluteX="8dp"
+        tools:layout_editor_absoluteY="0dp">
+
+        <TextView
+            android:id="@+id/txvTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/frmOp5002"
+            android:textAlignment="center"
+            android:textColor="@color/colorPrimary"
+            android:textSize="24sp" />
+
+    </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="40dp"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            android:weightSum="1">
+
+            <TextView
+                android:id="@+id/txvInAprt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/In_aprt"
+                android:textSize="24sp" />
+
+            <EditText
+                android:id="@+id/edtInAprt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="text"
+                android:textSize="24sp"
+                android:visibility="visible" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="40dp"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            android:weightSum="1">
+
+            <TextView
+                android:id="@+id/txvInNo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/In_no"
+                android:textSize="24sp" />
+
+            <EditText
+                android:id="@+id/edtInNo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="text"
+                android:textSize="24sp"
+                android:visibility="visible" />
+
+        </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="40dp"
+        android:orientation="horizontal"
+        android:weightSum="1">
+
+        <TextView
+            android:id="@+id/txvWhNo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/wh_no"
+            android:textSize="24sp" />
+
+        <EditText
+            android:id="@+id/edtWhNo"
+            android:layout_width="129dp"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="text"
+            android:textSize="24sp"
+            android:visibility="visible"
+            android:layout_weight="0.91" />
+
+        <RadioGroup
+            android:id="@+id/rdgWhType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <RadioButton
+                android:id="@+id/rdoA"
+                android:layout_width="wrap_content"
+                android:layout_height="47dp"
+                android:checked="true"
+                android:text="@string/wh_Type1"
+                android:textSize="24sp" />
+
+            <RadioButton
+                android:id="@+id/rdoB"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="@string/wh_Type2"
+                android:textSize="24sp" />
+        </RadioGroup>
+
+        <Button
+            android:id="@+id/btnSearch01"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:enabled="true"
+            android:text="@string/Search"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="24sp"
+            android:visibility="visible" />
+
+    </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:visibility="visible"
+            android:weightSum="1">
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/wh_no"
+                android:textSize="24sp"
+                android:visibility="invisible" />
+
+            <TextView
+                android:id="@+id/txvWhName"
+                android:layout_width="wrap_content"
+                android:layout_height="35dp"
+                android:textSize="24sp"
+                android:visibility="visible" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="visible"
+            android:weightSum="1">
+
+            <TextView
+                android:id="@+id/txvItem02"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/pdct_no"
+                android:textSize="24sp"
+                android:visibility="visible" />
+
+            <EditText
+                android:id="@+id/edtPdctNo"
+                android:layout_width="134dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.04"
+                android:ems="10"
+                android:inputType="text"
+                android:selectAllOnFocus="true"
+                android:textSize="24sp"
+                android:visibility="visible" />
+
+        </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="1"
+        android:layout_weight="0.07">
+
+        <TextView
+            android:id="@+id/txvItem022"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="列印張數 : "
+            android:textSize="24sp"
+            android:visibility="gone" />
+
+        <EditText
+            android:id="@+id/edtPrintqty"
+            android:layout_width="68dp"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="number"
+            android:maxLength="2"
+            android:selectAllOnFocus="true"
+            android:textSize="18sp"
+            android:visibility="gone" />
+
+    </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="40dp"
+            android:orientation="horizontal"
+            android:weightSum="1">
+
+            <TextView
+                android:id="@+id/txvItem011"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/pdct_name1"
+                android:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/txvPdctName1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="24sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:minHeight="40dp"
+            android:orientation="horizontal"
+            android:weightSum="1">
+
+            <TextView
+                android:id="@+id/txvItem012"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/pdct_name2"
+                android:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/txvPdctName2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="24sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:minHeight="40dp"
+            android:orientation="horizontal"
+            android:weightSum="1">
+
+            <TextView
+                android:id="@+id/txvItem013"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/unit"
+                android:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/txvUnit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="24sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1.77"
+            android:minHeight="40dp"
+            android:orientation="horizontal"
+            android:weightSum="1">
+
+            <TextView
+                android:id="@+id/txvItem022"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/total_qty"
+                android:textSize="24sp"
+                android:visibility="visible" />
+
+            <TextView
+                android:id="@+id/txv_total"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="24sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:minHeight="40dp"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            android:weightSum="1">
+
+            <TextView
+                android:id="@+id/txvItem014"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/safe_qty"
+                android:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/txvSafeQty"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="24sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:minHeight="40dp"
+            android:orientation="horizontal"
+            android:weightSum="1">
+
+            <TextView
+                android:id="@+id/txvItem015"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/chk_qty"
+                android:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/txvNowQty"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="24sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:visibility="visible"
+            android:weightSum="1">
+
+            <TextView
+                android:id="@+id/txvItem02"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/rel_qty"
+                android:textSize="24sp"
+                android:visibility="visible" />
+
+            <EditText
+                android:id="@+id/edtQty"
+                android:layout_width="134dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.04"
+                android:ems="10"
+                android:inputType="number"
+                android:selectAllOnFocus="true"
+                android:textSize="24sp"
+                android:visibility="visible" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="visible"
+            android:weightSum="1">
+
+            <Button
+                android:id="@+id/btnSearch02"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/search02"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="28sp"
+                android:visibility="gone" />
+
+            <Button
+                android:id="@+id/btnSave"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/Save"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="28sp"
+                android:visibility="visible" />
+
+        </LinearLayout>
+
+        <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textView13"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/status"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/txvResult"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="Msg!!"
+            android:textColor="@android:color/holo_red_dark"
+            android:textSize="22sp"
+            android:visibility="visible" />
+
+        </LinearLayout>
+
+        <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="bottom"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/txvFuncID"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="FuncID"
+            android:textColor="@android:color/background_dark"
+            android:textSize="22sp"
+            android:visibility="invisible" />
+
+    </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>
