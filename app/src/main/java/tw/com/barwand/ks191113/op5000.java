@@ -31,6 +31,7 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Hashtable;
@@ -49,7 +50,7 @@ public class op5000 extends AppCompatActivity {
     String mUrl = "";
     TextView mTxvResult,mTxvFuncID;
     TextView mTxvWhName,mTxvPdctName1,mTxvPdctName2,mTxvUnit,mTxvSafeQty,mTxvNowQty,mTxvTitle,mTxvTotalqty;
-    EditText mEdtInAprt,mEdtInNo,mEdtWhNo,mEdtPdctNo,mEdtQty;
+    EditText mEdtInAprt,mEdtInNo,mEdtWhNo,mEdtPdctNo,mEdtQty,mEdtNote;
     Button mBtnSearch01,mBtnSearch02,mBtnSave;
     RadioGroup mRdgWhType;
     RadioButton mRdoA,mRdoB;
@@ -191,6 +192,18 @@ public class op5000 extends AppCompatActivity {
                 return false;
             }
         });
+        mEdtNote.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View view, int i, KeyEvent keyEvent) {
+                if (i == KeyEvent.KEYCODE_ENTER && keyEvent.getAction() == KeyEvent.ACTION_UP) {
+
+                        mEdtQty.requestFocus();
+
+                    return true;
+                }
+                return false;
+            }
+        });
 
         mEdtPdctNo.setOnKeyListener(new View.OnKeyListener() {
             @Override
@@ -237,7 +250,7 @@ public class op5000 extends AppCompatActivity {
                         Errbeep(getApplicationContext(),"入庫單位、單號、儲位、料號、品名、數量不可為空，請確認!!",1000,true,1000);
                     }else
                     {
-                        volley_post_insert(mEdtInNo.getText().toString(),mEdtWhNo.getText().toString(),mEdtPdctNo.getText().toString(),mEdtQty.getText().toString());
+                        volley_post_insert(mEdtInNo.getText().toString(),mEdtWhNo.getText().toString(),mEdtPdctNo.getText().toString(),mEdtQty.getText().toString(),mEdtNote.getText().toString());
                         mEdtPdctNo.requestFocus();
                     }
                     return true;
@@ -300,7 +313,7 @@ public class op5000 extends AppCompatActivity {
                 Errbeep(getApplicationContext(),"入庫單位、單號、儲位、料號、品號、數量不可為空，請確認!!",1000,true,1000);
             }else
             {
-                volley_post_insert(mEdtInNo.getText().toString(),mEdtWhNo.getText().toString(),mEdtPdctNo.getText().toString(),mEdtQty.getText().toString());
+                volley_post_insert(mEdtInNo.getText().toString(),mEdtWhNo.getText().toString(),mEdtPdctNo.getText().toString(),mEdtQty.getText().toString(),mEdtNote.getText().toString());
                 mEdtPdctNo.requestFocus();
             }
             }
@@ -339,6 +352,7 @@ public class op5000 extends AppCompatActivity {
         mEdtWhNo= (EditText) findViewById(R.id.edtWhNo);
         mEdtPdctNo= (EditText) findViewById(R.id.edtPdctNo);
         mEdtQty= (EditText) findViewById(R.id.edtQty);
+        mEdtNote= (EditText) findViewById(R.id.edtNote) ;
 
         mBtnSearch01= (Button) findViewById(R.id.btnSearch01);
         mBtnSearch02= (Button) findViewById(R.id.btnSearch02);
@@ -564,9 +578,20 @@ public class op5000 extends AppCompatActivity {
 
         mQueue.add(mGetRequest);
     }
+//      轉中文編碼
+    public String encode_str(String str){
+        String result;
+        try {
+            result = new String(str.getBytes("utf-8"), "utf-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+            return "";
+        }
+        return result;
+    }
 
     // 利用 Volley 實現 POST 請求
-    private void volley_post_insert(final String str_in_no,final String str_wh,final String str_pdct,final String str_qty) {
+    private void volley_post_insert(final String str_in_no,final String str_wh,final String str_pdct,final String str_qty,final String str_note) {
         String result = "",methodName="",SOAP_ACTION1="",NAMESPACE="";
         String strbits="";
         //final String W=medtInput.getText().toString().split(";")[3];
@@ -644,6 +669,7 @@ public class op5000 extends AppCompatActivity {
                 params.put("stPdct", str_pdct);
                 params.put("stQty", str_qty);
                 params.put("stEmp", fstrEmpNo);
+                params.put("stNote",encode_str(str_note));
                 return params;
             }
         };
