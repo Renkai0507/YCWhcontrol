@@ -41,19 +41,19 @@ import static tw.com.barwand.ks191113.GlobalVariable.OKbeep;
  */
 
 
-public class op5000_1 extends AppCompatActivity {
+public class op5004_1 extends AppCompatActivity {
     RequestQueue mQueue;
     String mUrl = "";
     TextView mTxvResult,mTxvFuncID;
-    TextView mTxvWhName,mTxvPdctName1,mTxvPdctName2,mTxvUnit,mTxvSafeQty,mTxvNowQty,mTxvTitle;
-    EditText mEdtInNo,mEdtWhNo,mEdtPdctNo,mEdtQty,mEdtUpdQty,mEdtnote;
+    TextView mTxvWhName,mTxvPdctName1,mTxvPdctName2,mTxvUnit,mTxvSafeQty,mTxvNowQty,mTxvTitle,mTxvTotal,mTxvoldqty,mTxvWhNewName,mTxvWhOldName;
+    EditText mEdtInNo,mEdtWhNo,mEdtPdctNo,mEdtQty,mEdtwhold,mEdtwhnew,mEdtnote,mEdtUpdQty;
     Button mBtnSearch01,mBtnSearch02,mBtnSave,mBtnDel;
     RadioGroup mRdgWhType;
     RadioButton mRdoA,mRdoB;
     StringRequest mGetRequest;
     String OutputData = "";
     String  fstrIP,fstrPort,fstrPass,fstrURL,fstrNameSpace,fstrBT,fstrOraTNS,fstrDep_ID,fstrMac_ID,fstrEmpNo;
-    String fstrBucketType,fstrUseType,fstrWhType,fstrAprt,fstrInNo,fstrWh,fstrPdct,fstrQty,fstrWorkType,fstrSeq,fstrnote;
+    String fstrBucketType,fstrUseType,fstrWhType,fstrAprt,fstrInNo,fstrOldWh,fstrNewWh,fstrPdct,fstrQty,fstrWorkType,fstrSeq,fstrnote;
 
     String fstrInvType;
     String[] libNo,libName;
@@ -84,7 +84,7 @@ public class op5000_1 extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_op5000_1);
+        setContentView(R.layout.activity_op5004_1);
 
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);// 讓手機螢幕保持直立模式
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);//不自動彈出虛擬鍵盤
@@ -99,7 +99,8 @@ public class op5000_1 extends AppCompatActivity {
         Bundle bundle =this.getIntent().getExtras();
         fstrAprt=bundle.getString("SearchAprt");
         fstrInNo=bundle.getString("SearchInNo");
-        fstrWh=bundle.getString("SearchWh");
+        fstrOldWh=bundle.getString("SearchOldWh");
+        fstrNewWh=bundle.getString("SearchNewWh");
         fstrPdct=bundle.getString("SearchPdct");
         fstrQty=bundle.getString("SearchQty");
         fstrSeq=bundle.getString("SearchSeq");
@@ -123,7 +124,7 @@ public class op5000_1 extends AppCompatActivity {
         //mtxvItemDate=(TextView) findViewById(R.id.txvItemDate);
         //mtxvItemDate.setText(strYear+"-"+strMon+"-"+strDay);
         //mtxvItemDate.setText(dts);
-        volley_post_pdct(fstrWh,fstrPdct);
+        volley_post_pdct(fstrOldWh,fstrNewWh,fstrPdct);
 
         /*mBtnSearch02.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -185,10 +186,13 @@ public class op5000_1 extends AppCompatActivity {
         mTxvSafeQty = (TextView) findViewById(R.id.txvSafeQty);
         mTxvNowQty = (TextView) findViewById(R.id.txvNowQty);
         mTxvTitle= (TextView) findViewById(R.id.txvTitle);
+        mTxvTotal= (TextView) findViewById(R.id.txv_total);
+        mTxvoldqty = (TextView) findViewById(R.id.txvoldQty);
 
 
         mEdtInNo= (EditText) findViewById(R.id.edtInNo);
-        mEdtWhNo= (EditText) findViewById(R.id.edtWhNo);
+        mEdtwhold= (EditText)findViewById(R.id.edtWhold);
+        mEdtwhnew= (EditText)findViewById(R.id.edtWhnew);
         mEdtPdctNo= (EditText) findViewById(R.id.edtPdctNo);
         mEdtQty= (EditText) findViewById(R.id.edtQty);
         mEdtUpdQty= (EditText) findViewById(R.id.edtUpdQty);
@@ -313,14 +317,14 @@ public class op5000_1 extends AppCompatActivity {
 
 
     // 利用 Volley 實現 POST 請求
-    private void volley_post_pdct(final String str_wh,final String str_pdct) {
+    private void volley_post_pdct(final String str_wh,final  String str_newWh,final String str_pdct) {
         String result = "",methodName="",SOAP_ACTION1="",NAMESPACE="";
         String strbits="";
         //final String W=medtInput.getText().toString().split(";")[3];
         //final String LH=medtInput.getText().toString().split(";")[0];
         //final String PH=medtInput.getText().toString().split(";")[1];
         OutputData = "";
-        mUrl="http://" + fstrIP + ":" +fstrPort + "/ycworksys/yc_search_pdct.php";
+        mUrl="http://" + fstrIP + ":" +fstrPort + "/ycworksys/yc_search_transpdct.php";
 
         mQueue = Volley.newRequestQueue(getApplicationContext());
         final String finalStrbits = strbits;
@@ -334,24 +338,29 @@ public class op5000_1 extends AppCompatActivity {
                             int n =new JSONArray(response).length(); //筆數
                             int i=1;//取第1筆
                             String stMsg =new JSONArray(response).getJSONObject(i-1).getString("OUTPUT");
-
                              if (stMsg.equals("OK"))
                             {
                                 String stPdctName1 =new JSONArray(response).getJSONObject(i-1).getString("Item01");
                                 String stPdctName2 =new JSONArray(response).getJSONObject(i-1).getString("Item02");
                                 String stUnit =new JSONArray(response).getJSONObject(i-1).getString("Item03");
                                 String stSafeQty =new JSONArray(response).getJSONObject(i-1).getString("Item04");
-                                String stNowQty =new JSONArray(response).getJSONObject(i-1).getString("Item05");
+                                String stOldQty =new JSONArray(response).getJSONObject(i-1).getString("Item05");
+                                String stTotalQty = new JSONArray(response).getJSONObject(i-1).getString("Item06");
+                                String stNewQty = new JSONArray(response).getJSONObject(i-1).getString("Item07");
 
                                 mEdtInNo.setText(fstrInNo);
-                                mEdtWhNo.setText(fstrWh);
+                                mEdtwhold.setText(fstrOldWh);
+                                mEdtwhnew.setText(fstrNewWh);
                                 mEdtPdctNo.setText(fstrPdct);
                                 mEdtQty.setText(fstrQty);
                                 mTxvPdctName1.setText(stPdctName1);
                                 mTxvPdctName2.setText(stPdctName2);
                                 mTxvUnit.setText(stUnit);
                                 mTxvSafeQty.setText(stSafeQty);
-                                mTxvNowQty.setText(stNowQty);
+                                mTxvoldqty.setText(stOldQty);
+                                mTxvTotal.setText(stTotalQty);
+                                mTxvNowQty.setText(stNewQty);
+
                                 mEdtnote.setText(fstrnote);
                             }
                             else
@@ -392,6 +401,7 @@ public class op5000_1 extends AppCompatActivity {
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String,String> params = new Hashtable<String, String>();
                 params.put("stWh", str_wh);
+                params.put("stnewWh",str_newWh);
                 params.put("stPdct", str_pdct);
                 return params;
             }
@@ -414,7 +424,7 @@ public class op5000_1 extends AppCompatActivity {
         //final String LH=medtInput.getText().toString().split(";")[0];
         //final String PH=medtInput.getText().toString().split(";")[1];
         OutputData = "";
-        mUrl="http://" + fstrIP + ":" +fstrPort + "/ycworksys/yc_update_stock.php";
+        mUrl="http://" + fstrIP + ":" +fstrPort + "/ycworksys/yc_update_turn.php";
 
         mQueue = Volley.newRequestQueue(getApplicationContext());
         final String finalStrbits = strbits;
@@ -431,7 +441,8 @@ public class op5000_1 extends AppCompatActivity {
 
                             if (stMsg.equals("OK"))
                             {
-                                mTxvNowQty.setText(new JSONArray(response).getJSONObject(i-1).getString("Item01"));
+                                mTxvNowQty.setText(new JSONArray(response).getJSONObject(i-1).getString("Item02"));
+                                mTxvoldqty.setText(new JSONArray(response).getJSONObject(i-1).getString("Item01"));
                                 if (fstrWorkType.equals("Update"))
                                 {
                                     mEdtQty.setText(mEdtUpdQty.getText().toString());
@@ -473,11 +484,12 @@ public class op5000_1 extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String,String> params = new Hashtable<String, String>();
-                params.put("stUpdTable", "in_mast");
+                params.put("stUpdTable", "turn_mast");
                 params.put("stWorkType", fstrWorkType);
                 params.put("stAprt", fstrAprt);
                 params.put("stInNo", fstrInNo);
-                params.put("stWh", fstrWh);
+                params.put("stWh", fstrOldWh);
+                params.put("stNewWh", fstrNewWh);
                 params.put("stPdct", fstrPdct);
                 params.put("stQty", mEdtQty.getText().toString());
                 params.put("stUpdQty", mEdtUpdQty.getText().toString());

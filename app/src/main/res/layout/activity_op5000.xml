@@ -349,12 +349,13 @@
                 android:visibility="visible" />
 
             <EditText
-                android:id="@+id/edtQty"
+                android:id="@+id/edtNote"
                 android:layout_width="134dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1.04"
                 android:ems="10"
-                android:inputType="number"
+                android:inputType="text"
+                android:maxLength="50"
                 android:selectAllOnFocus="true"
                 android:textSize="24sp"
                 android:visibility="visible" />

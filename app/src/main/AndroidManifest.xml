@@ -32,6 +32,7 @@
         <activity android:name=".op5002" />
         <activity android:name=".op5003" />
         <activity android:name=".op5004" />
+        <activity android:name=".op5004_1" />
         <activity android:name=".op5005" />
         <activity android:name=".set_para" />
         <activity android:name=".set_para_1" />

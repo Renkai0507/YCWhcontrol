@@ -16,6 +16,7 @@
     <string name="ExportA02">匯出出貨資料</string>
     <string name="DeleteA01">刪除入庫資料</string>
     <string name="DeleteA02">刪除出庫資料</string>
+    <string name="DeleteA03">刪除調撥資料</string>
     <string name="EmpSelect">選擇員工</string>
     <string name="Cust">客戶:</string>
     <string name="Cust_Hint">請輸入客戶代號</string>

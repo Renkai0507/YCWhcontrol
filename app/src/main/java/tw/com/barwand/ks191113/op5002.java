@@ -31,6 +31,7 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Hashtable;
@@ -49,12 +50,12 @@ public class op5002 extends AppCompatActivity {
     String mUrl = "";
     TextView mTxvResult,mTxvFuncID;
     TextView mTxvWhName,mTxvPdctName1,mTxvPdctName2,mTxvUnit,mTxvSafeQty,mTxvNowQty,mTxvTitle,mTxvTotal;
-    EditText mEdtInNo,mEdtWhNo,mEdtPdctNo,mEdtQty;
+    EditText mEdtInNo,mEdtWhNo,mEdtPdctNo,mEdtQty,mEdtNote;
     Button mBtnSearch01,mBtnSearch02,mBtnSave;
 
     StringRequest mGetRequest;
     String OutputData = "";
-    String  fstrIP,fstrPort,fstrPass,fstrURL,fstrNameSpace,fstrBT,fstrOraTNS,fstrDep_ID,fstrMac_ID,fstrEmpNo;
+    String  fstrIP,fstrPort,fstrPass,fstrURL,fstrNameSpace,fstrBT,fstrOraTNS,fstrDep_ID,fstrMac_ID,fstrEmpNo,fstrNote;
     String fstrBucketType,fstrUseType,fstrWhType,Searchtype;
     String fstrInvType;
     String[] libNo,libName;
@@ -188,7 +189,18 @@ public class op5002 extends AppCompatActivity {
                 return false;
             }
         });
+        mEdtNote.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View view, int i, KeyEvent keyEvent) {
+                if (i == KeyEvent.KEYCODE_ENTER && keyEvent.getAction() == KeyEvent.ACTION_UP) {
 
+                    mEdtQty.requestFocus();
+
+                    return true;
+                }
+                return false;
+            }
+        });
         mEdtPdctNo.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View view, int i, KeyEvent keyEvent) {
@@ -237,7 +249,7 @@ public class op5002 extends AppCompatActivity {
                         b=Double.valueOf(mEdtQty.getText().toString());
                         if(Double.valueOf(mEdtQty.getText().toString())==a)
                         {
-                                volley_post_insert(mEdtWhNo.getText().toString(), mEdtPdctNo.getText().toString(), mTxvNowQty.getText().toString(), mEdtQty.getText().toString());
+                                volley_post_insert(mEdtWhNo.getText().toString(), mEdtPdctNo.getText().toString(), mTxvNowQty.getText().toString(), mEdtQty.getText().toString(),mEdtNote.getText().toString());
                         }
                         else
                             {
@@ -248,7 +260,7 @@ public class op5002 extends AppCompatActivity {
                                     public void onClick(DialogInterface dialog, int i) {
                                         // TODO Auto-generated method stub
 //                                MainActivity.this.finish();//關閉activity
-                                        volley_post_insert(mEdtWhNo.getText().toString(), mEdtPdctNo.getText().toString(), mTxvNowQty.getText().toString(), mEdtQty.getText().toString());
+                                        volley_post_insert(mEdtWhNo.getText().toString(), mEdtPdctNo.getText().toString(), mTxvNowQty.getText().toString(), mEdtQty.getText().toString(),mEdtNote.getText().toString());
 
                                     }
                                 });
@@ -320,7 +332,7 @@ public class op5002 extends AppCompatActivity {
                 Errbeep(getApplicationContext(),"儲位、料號、實盤數量不可為空，請確認!!",1000,true,1000);
             }else
             {
-                volley_post_insert(mEdtWhNo.getText().toString(),mEdtPdctNo.getText().toString(),mTxvNowQty.getText().toString(),mEdtQty.getText().toString());
+                volley_post_insert(mEdtWhNo.getText().toString(),mEdtPdctNo.getText().toString(),mTxvNowQty.getText().toString(),mEdtQty.getText().toString(),mEdtNote.getText().toString());
                 mEdtPdctNo.requestFocus();
             }
             }
@@ -359,6 +371,7 @@ public class op5002 extends AppCompatActivity {
         mEdtWhNo= (EditText) findViewById(R.id.edtWhNo);
         mEdtPdctNo= (EditText) findViewById(R.id.edtPdctNo);
         mEdtQty= (EditText) findViewById(R.id.edtQty);
+        mEdtNote= (EditText) findViewById(R.id.edtNote);
 
         mBtnSearch01= (Button) findViewById(R.id.btnSearch01);
         mBtnSearch02= (Button) findViewById(R.id.btnSearch02);
@@ -579,9 +592,18 @@ public class op5002 extends AppCompatActivity {
 
         mQueue.add(mGetRequest);
     }
-
+    public String encode_str(String str){
+        String result;
+        try {
+            result = new String(str.getBytes("utf-8"), "utf-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+            return "";
+        }
+        return result;
+    }
     // 利用 Volley 實現 POST 請求
-    private void volley_post_insert(final String str_wh,final String str_pdct,final String str_qty,final String str_chk_qty) {
+    private void volley_post_insert(final String str_wh,final String str_pdct,final String str_qty,final String str_chk_qty,final String str_note) {
         String result = "",methodName="",SOAP_ACTION1="",NAMESPACE="";
         String strbits="";
         //final String W=medtInput.getText().toString().split(";")[3];
@@ -609,6 +631,7 @@ public class op5002 extends AppCompatActivity {
                                 mTxvTotal.setText( new JSONArray(response).getJSONObject(i-1).getString("Item02"));
                                 OKbeep(getApplicationContext(),"儲存成功!!",1000,true,1000);
                                 mEdtQty.setText("");
+                                mEdtNote.setText("");
 
                             } else if (stMsg.equals("NG4")) {
                                 Errbeep(getApplicationContext(),"倉儲位置錯誤!",1000,true,1000);
@@ -657,6 +680,7 @@ public class op5002 extends AppCompatActivity {
                 params.put("stQty", str_qty);
                 params.put("stChkQty", str_chk_qty);
                 params.put("stEmp", fstrEmpNo);
+                params.put("stNote",encode_str(str_note));
                 return params;
             }
         };

@@ -46,14 +46,14 @@ public class op5001_1 extends AppCompatActivity {
     String mUrl = "";
     TextView mTxvResult,mTxvFuncID;
     TextView mTxvWhName,mTxvPdctName1,mTxvPdctName2,mTxvUnit,mTxvSafeQty,mTxvNowQty,mTxvTitle;
-    EditText mEdtInNo,mEdtWhNo,mEdtPdctNo,mEdtQty,mEdtUpdQty;
+    EditText mEdtInNo,mEdtWhNo,mEdtPdctNo,mEdtQty,mEdtUpdQty,mEdtNote;
     Button mBtnSearch01,mBtnSearch02,mBtnSave,mBtnDel;
     RadioGroup mRdgWhType;
     RadioButton mRdoA,mRdoB;
     StringRequest mGetRequest;
     String OutputData = "";
     String  fstrIP,fstrPort,fstrPass,fstrURL,fstrNameSpace,fstrBT,fstrOraTNS,fstrDep_ID,fstrMac_ID,fstrEmpNo;
-    String fstrBucketType,fstrUseType,fstrWhType,fstrAprt,fstrInNo,fstrWh,fstrPdct,fstrQty,fstrWorkType,fstrSeq;
+    String fstrBucketType,fstrUseType,fstrWhType,fstrAprt,fstrInNo,fstrWh,fstrPdct,fstrQty,fstrWorkType,fstrSeq,fstrnote;
 
     String fstrInvType;
     String[] libNo,libName;
@@ -103,6 +103,7 @@ public class op5001_1 extends AppCompatActivity {
         fstrPdct=bundle.getString("SearchPdct");
         fstrQty=bundle.getString("SearchQty");
         fstrSeq=bundle.getString("SearchSeq");
+        fstrnote=bundle.getString("SearchNote");
 
         initComponent();
         readData(); //讀取各項設定值
@@ -191,6 +192,7 @@ public class op5001_1 extends AppCompatActivity {
         mEdtPdctNo= (EditText) findViewById(R.id.edtPdctNo);
         mEdtQty= (EditText) findViewById(R.id.edtQty);
         mEdtUpdQty= (EditText) findViewById(R.id.edtUpdQty);
+        mEdtNote= (EditText) findViewById(R.id.edtNote);
 
         mBtnSearch01= (Button) findViewById(R.id.btnSearch01);
         mBtnSearch02= (Button) findViewById(R.id.btnSearch02);
@@ -349,6 +351,7 @@ public class op5001_1 extends AppCompatActivity {
                                 mTxvUnit.setText(stUnit);
                                 mTxvSafeQty.setText(stSafeQty);
                                 mTxvNowQty.setText(stNowQty);
+                                mEdtNote.setText(fstrnote);
 
                             }
                             else
@@ -477,6 +480,7 @@ public class op5001_1 extends AppCompatActivity {
                 params.put("stQty", mEdtQty.getText().toString());
                 params.put("stUpdQty", mEdtUpdQty.getText().toString());
                 params.put("stSeq", fstrSeq);
+                params.put("stNote",mEdtNote.getText().toString());
                 return params;
             }
         };

@@ -376,6 +376,7 @@ public class op5000 extends AppCompatActivity {
         mTxvSafeQty.setText("");
         mTxvNowQty.setText("");
         mTxvResult.setText("");
+
 //        fstrUseType="";
 //        fstrBucketType="";
 //        mEdtInAprt.requestFocus();
@@ -620,6 +621,7 @@ public class op5000 extends AppCompatActivity {
                                 OKbeep(getApplicationContext(),"儲存成功!!",1000,true,1000);
                                 mEdtQty.setText("");
                                 mTxvResult.setText("");
+                                mEdtNote.setText("");
                             }
                             else if (stMsg.equals("NG4")) {
                                 Errbeep(getApplicationContext(),"倉儲位置錯誤!",1000,true,1000);

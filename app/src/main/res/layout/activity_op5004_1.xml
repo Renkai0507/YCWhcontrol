@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:scrollbars="vertical"
@@ -23,7 +24,7 @@
             android:id="@+id/txvTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/frmOp5000"
+            android:text="@string/btnOp5004"
             android:textAlignment="center"
             android:textColor="@color/colorPrimary"
             android:textSize="24sp" />
@@ -57,31 +58,32 @@
 
         </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:minHeight="40dp"
-        android:orientation="horizontal"
-        android:weightSum="1">
-
-        <TextView
-            android:id="@+id/txvInNo"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/In_no"
-            android:textSize="24sp" />
+            android:minHeight="40dp"
+            android:orientation="horizontal"
+            android:visibility="visible"
+            android:weightSum="1">
 
-        <EditText
-            android:id="@+id/edtInNo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:enabled="false"
-            android:inputType="text"
-            android:textSize="24sp"
-            android:visibility="visible" />
+            <TextView
+                android:id="@+id/txvInNo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/In_no"
+                android:textSize="24sp" />
 
-    </LinearLayout>
+            <EditText
+                android:id="@+id/edtInNo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:enabled="false"
+                android:inputType="text"
+                android:textSize="24sp"
+                android:visibility="visible" />
+
+        </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -94,34 +96,19 @@
             android:id="@+id/txvWhNo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/wh_no"
+            android:text="@string/wh_old"
             android:textSize="24sp" />
 
         <EditText
-            android:id="@+id/edtWhNo"
-            android:layout_width="wrap_content"
+            android:id="@+id/edtWhold"
+            android:layout_width="129dp"
             android:layout_height="wrap_content"
+            android:layout_weight="0.91"
             android:ems="10"
             android:enabled="false"
             android:inputType="text"
             android:textSize="24sp"
             android:visibility="visible" />
-
-        <TextView
-            android:id="@+id/txvWhName"
-            android:layout_width="wrap_content"
-            android:layout_height="35dp"
-            android:textSize="24sp"
-            android:visibility="visible" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:visibility="visible"
-            android:weightSum="1">
-
-        </LinearLayout>
 
         <RadioGroup
             android:id="@+id/rdgWhType"
@@ -148,15 +135,123 @@
 
         <Button
             android:id="@+id/btnSearch01"
-            android:layout_width="44dp"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             android:enabled="true"
-            android:text="@string/Type_Select"
+            android:text="@string/Search"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="24sp"
-            android:visibility="gone" />
+            android:visibility="visible" />
 
     </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            android:weightSum="1">
+
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/wh_old"
+                android:textSize="24sp"
+                android:visibility="invisible" />
+
+            <TextView
+                android:id="@+id/txvWhold"
+                android:layout_width="wrap_content"
+                android:layout_height="35dp"
+                android:textSize="24sp"
+                android:visibility="visible" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:minHeight="40dp"
+            android:orientation="horizontal"
+            android:weightSum="1">
+
+            <TextView
+                android:id="@+id/txvWhNo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/wh_new"
+                android:textSize="24sp" />
+
+            <EditText
+                android:id="@+id/edtWhnew"
+                android:layout_width="129dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.91"
+                android:ems="10"
+                android:enabled="false"
+                android:inputType="text"
+                android:textSize="24sp"
+                android:visibility="visible" />
+
+            <RadioGroup
+                android:id="@+id/rdgWhType"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <RadioButton
+                    android:id="@+id/rdoA"
+                    android:layout_width="wrap_content"
+                    android:layout_height="47dp"
+                    android:checked="true"
+                    android:text="@string/wh_Type1"
+                    android:textSize="24sp" />
+
+                <RadioButton
+                    android:id="@+id/rdoB"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="@string/wh_Type2"
+                    android:textSize="24sp" />
+            </RadioGroup>
+
+            <Button
+                android:id="@+id/btnSearch02"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:enabled="true"
+                android:text="@string/Search"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="24sp"
+                android:visibility="visible" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            android:weightSum="1">
+
+            <TextView
+                android:id="@+id/textView14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/wh_new"
+                android:textSize="24sp"
+                android:visibility="invisible" />
+
+            <TextView
+                android:id="@+id/txvWhnew"
+                android:layout_width="wrap_content"
+                android:layout_height="35dp"
+                android:textSize="24sp"
+                android:visibility="visible" />
+
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -288,6 +383,7 @@
             android:layout_height="match_parent"
             android:minHeight="40dp"
             android:orientation="horizontal"
+            android:visibility="visible"
             android:weightSum="1">
 
             <TextView
@@ -309,6 +405,31 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_weight="1.77"
+            android:minHeight="40dp"
+            android:orientation="horizontal"
+            android:weightSum="1">
+
+            <TextView
+                android:id="@+id/txvItem022"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/total_qty"
+                android:textSize="24sp"
+                android:visibility="visible" />
+
+            <TextView
+                android:id="@+id/txv_total"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="24sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:minHeight="40dp"
             android:orientation="horizontal"
             android:weightSum="1">
@@ -317,7 +438,30 @@
                 android:id="@+id/txvItem015"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/now_qty"
+                android:text="原儲位數量"
+                android:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/txvoldQty"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="24sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:minHeight="40dp"
+            android:orientation="horizontal"
+            android:weightSum="1">
+
+            <TextView
+                android:id="@+id/txvItem015"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="目標儲位數量"
                 android:textSize="24sp" />
 
             <TextView
@@ -326,6 +470,35 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:textSize="24sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:visibility="visible"
+            android:weightSum="1">
+
+            <TextView
+                android:id="@+id/txvItem02"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/tranqty"
+                android:textSize="24sp"
+                android:visibility="visible" />
+
+            <EditText
+                android:id="@+id/edtQty"
+                android:layout_width="134dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.04"
+                android:ems="10"
+                android:enabled="false"
+                android:inputType="number"
+                android:selectAllOnFocus="true"
+                android:textSize="24sp"
+                android:visibility="visible" />
 
         </LinearLayout>
 
@@ -369,35 +542,6 @@
                 android:id="@+id/txvItem02"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/in_qty"
-                android:textSize="24sp"
-                android:visibility="visible" />
-
-            <EditText
-                android:id="@+id/edtQty"
-                android:layout_width="134dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1.04"
-                android:ems="10"
-                android:enabled="false"
-                android:inputType="number"
-                android:selectAllOnFocus="true"
-                android:textSize="24sp"
-                android:visibility="visible" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:visibility="visible"
-            android:weightSum="1">
-
-            <TextView
-                android:id="@+id/txvItem16"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:text="@string/upd_qty"
                 android:textSize="24sp"
                 android:visibility="visible" />
@@ -408,7 +552,6 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1.04"
                 android:ems="10"
-                android:enabled="true"
                 android:inputType="number"
                 android:selectAllOnFocus="true"
                 android:textSize="24sp"
@@ -427,14 +570,14 @@
                 android:id="@+id/btnDel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/DeleteA01"
+                android:text="@string/DeleteA03"
                 android:textColor="@color/colorPrimaryDark"
                 android:textSize="28sp"
                 android:visibility="visible" />
 
             <Button
                 android:id="@+id/btnSave"
-                android:layout_width="128dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/Save"
                 android:textColor="@color/colorPrimaryDark"

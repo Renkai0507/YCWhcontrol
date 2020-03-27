@@ -29,6 +29,7 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Hashtable;
@@ -47,7 +48,7 @@ public class op5004 extends AppCompatActivity {
     String mUrl = "";
     TextView mTxvResult,mTxvFuncID;
     TextView mTxvWhName,mTxvPdctName1,mTxvPdctName2,mTxvUnit,mTxvSafeQty,mTxvNowQty,mTxvTitle,mTxvTotal,mTxvoldqty,mTxvWhNewName,mTxvWhOldName;
-    EditText mEdtInNo,mEdtWhNo,mEdtPdctNo,mEdtQty,mEdtwhold,mEdtwhnew;
+    EditText mEdtInNo,mEdtWhNo,mEdtPdctNo,mEdtQty,mEdtwhold,mEdtwhnew,mEdtNote;
     Button mBtnSearch01,mBtnSearch02,mBtnSave,mBtnSearch03;
 
     StringRequest mGetRequest;
@@ -233,7 +234,7 @@ public class op5004 extends AppCompatActivity {
                         }
                         else
                         {
-                            volley_post_insert(mEdtwhold.getText().toString(),mEdtwhnew.getText().toString(),mEdtPdctNo.getText().toString(),mTxvoldqty.getText().toString(),mTxvNowQty.getText().toString(),mEdtQty.getText().toString());
+                            volley_post_insert(mEdtInNo.getText().toString() ,mEdtwhold.getText().toString(),mEdtwhnew.getText().toString(),mEdtPdctNo.getText().toString(),mEdtQty.getText().toString(),mEdtNote.getText().toString());
                             mEdtPdctNo.requestFocus();
                         }
                     }
@@ -279,23 +280,25 @@ public class op5004 extends AppCompatActivity {
 
             }
         });
-//        mBtnSearch03.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent it = new Intent(op5004.this,php_search01.class);
-//
-//                //new一個Bundle物件，並將要傳遞的資料傳入
-//                Bundle bundle = new Bundle();
-////                bundle.putString("Whtype","new");
-//                bundle.putString("SearchType", "trans");
-//
-//                //將Bundle物件assign給intent
-//                it.putExtras(bundle);
-//                //startActivity(it);
-//                startActivityForResult(it, REQUEST_Cust);
-//
-//            }
-//        });
+        mBtnSearch03.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                    Intent it = new Intent(op5004.this, php_search01.class);
+
+                    //new一個Bundle物件，並將要傳遞的資料傳入
+                    Bundle bundle = new Bundle();
+//                bundle.putString("Whtype","new");
+                    bundle.putString("SearchType", "trans");
+                    bundle.putString("SearchAprt", fstrEmpNo);
+                    bundle.putString("SearchInNo", mEdtInNo.getText().toString());
+                    //將Bundle物件assign給intent
+                    it.putExtras(bundle);
+                    //startActivity(it);
+                    startActivityForResult(it, REQUEST_Cust);
+
+            }
+        });
 
         mBtnSave.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -311,7 +314,7 @@ public class op5004 extends AppCompatActivity {
                 }
                 else
                 {
-                    volley_post_insert(mEdtwhold.getText().toString(),mEdtwhnew.getText().toString(),mEdtPdctNo.getText().toString(),mTxvoldqty.getText().toString(),mTxvNowQty.getText().toString(),mEdtQty.getText().toString());
+                    volley_post_insert(mEdtInNo.getText().toString() ,mEdtwhold.getText().toString(),mEdtwhnew.getText().toString(),mEdtPdctNo.getText().toString(),mEdtQty.getText().toString(),mEdtNote.getText().toString());
                     mEdtPdctNo.requestFocus();
                 }
 
@@ -354,12 +357,12 @@ public class op5004 extends AppCompatActivity {
 
 
 
-//        mEdtInNo= (EditText) findViewById(R.id.edtInNo);
+        mEdtInNo= (EditText) findViewById(R.id.edtInNo);
         mEdtwhold = (EditText) findViewById(R.id.edtWhold);
         mEdtwhnew = (EditText) findViewById(R.id.edtWhnew);
         mEdtPdctNo= (EditText) findViewById(R.id.edtPdctNo);
         mEdtQty= (EditText) findViewById(R.id.edtQty);
-
+        mEdtNote= (EditText) findViewById(R.id.edtNote);
 
         mBtnSearch01= (Button) findViewById(R.id.btnSearch01);
         mBtnSearch02= (Button) findViewById(R.id.btnSearch02);
@@ -602,9 +605,19 @@ public class op5004 extends AppCompatActivity {
 
         mQueue.add(mGetRequest);
     }
+    public String encode_str(String str){
+        String result;
+        try {
+            result = new String(str.getBytes("utf-8"), "utf-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+            return "";
+        }
+        return result;
+    }
 
     // 利用 Volley 實現 POST 請求
-    private void volley_post_insert(final String str_wh,final String st_newwh ,final String str_pdct,final String str_qty,final String str_chk_qty , final  String st_trans_qty) {
+    private void volley_post_insert(final String str_in_no,final String str_wh,final String st_newwh ,final String str_pdct , final  String st_trans_qty,final String st_Note) {
         String result = "",methodName="",SOAP_ACTION1="",NAMESPACE="";
         String strbits="";
         //final String W=medtInput.getText().toString().split(";")[3];
@@ -635,6 +648,7 @@ public class op5004 extends AppCompatActivity {
                                 OKbeep(getApplicationContext(),"儲存成功!!",1000,true,1000);
                                 mEdtQty.setText("");
                                 mTxvResult.setText("");
+                                mEdtNote.setText("");
 
                             } else if (stMsg.equals("NG4")) {
                                 Errbeep(getApplicationContext(),"倉儲位置錯誤!",1000,true,1000);
@@ -678,12 +692,12 @@ public class op5004 extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String,String> params = new Hashtable<String, String>();
+                params.put("stInNo",str_in_no);
                 params.put("stWh", str_wh);
                 params.put("stNewWh", st_newwh);
                 params.put("stPdct", str_pdct);
-                params.put("stQty", str_qty);
-                params.put("stChkQty", str_chk_qty);
                 params.put("stTransQty", st_trans_qty);
+                params.put("stNote",encode_str(st_Note));
                 params.put("stEmp", fstrEmpNo);
                 return params;
             }

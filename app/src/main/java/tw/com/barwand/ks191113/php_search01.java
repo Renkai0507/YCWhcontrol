@@ -46,7 +46,7 @@ public class php_search01 extends AppCompatActivity {
     String OutputData = "",fstrSearchType;
     String  fstrIP,fstrPort,fstrPass,fstrURL,fstrNameSpace,fstrBT,fstrOraTNS,fstrDep_ID,fstrMac_ID,fstrPdctType,fstrWhType,fstrPdctInWh;
     String  fstrAprt,fstrInNo,fstrInQty,fstrPdctNo;
-    String[] libID,libName,libQty,libSeq,libBucketType,libUseType;
+    String[] libID,libName,libQty,libSeq,libBucketType,libUseType,libnote,libOldWh,libNewWh;
     ListView listResult;
 
     private SharedPreferences settings;
@@ -93,11 +93,16 @@ public class php_search01 extends AppCompatActivity {
         {
             fstrPdctNo=bundle.getString("Searchpdct");
 //            fstrPdctInWh=bundle.getString("PdctInWh");
-        }else if(fstrSearchType.equals("pdctinwh"))
+        }else if(fstrSearchType.equals("pdctinwh")) {
+            fstrPdctNo = bundle.getString("Searchpdct");
+            fstrPdctInWh = bundle.getString("PdctInWh");
+        }else if(fstrSearchType.equals("trans"))
         {
-            fstrPdctNo=bundle.getString("Searchpdct");
-            fstrPdctInWh=bundle.getString("PdctInWh");
+            fstrAprt=bundle.getString("SearchAprt");
+            fstrInNo=bundle.getString("SearchInNo");
         }
+
+
         fstrWhType = bundle.getString("Whtype");
         //fstrPdctType=bundle.getString("PdctType");
         //fstrCustType=bundle.getString("Cust");
@@ -118,6 +123,7 @@ public class php_search01 extends AppCompatActivity {
                 String strName = libName[position].trim();//料號
                 String strQty = libQty[position].trim();//入庫數量
                 String strSeq = libSeq[position].trim();//序號
+                String strnote = libnote[position].trim();//註解
                 //mBundle.putString("ID", strID);
                 //mBundle.putString("Name", strName);
                 //mBundle.putString("Qty", strQty);
@@ -133,6 +139,7 @@ public class php_search01 extends AppCompatActivity {
                 bundle.putString("SearchPdct", strName);
                 bundle.putString("SearchQty", strQty);
                 bundle.putString("SearchSeq", strSeq);
+                bundle.putString("SearchNote", strnote);
 
                 //將Bundle物件assign給intent
                 it.putExtras(bundle);
@@ -146,6 +153,7 @@ public class php_search01 extends AppCompatActivity {
                 String strName = libName[position].trim();//料號
                 String strQty = libQty[position].trim();//入庫數量
                 String strSeq = libSeq[position].trim();//序號
+                String strnote = libnote[position].trim();//註解
                 //mBundle.putString("ID", strID);
                 //mBundle.putString("Name", strName);
                 //mBundle.putString("Qty", strQty);
@@ -161,13 +169,44 @@ public class php_search01 extends AppCompatActivity {
                 bundle.putString("SearchPdct", strName);
                 bundle.putString("SearchQty", strQty);
                 bundle.putString("SearchSeq", strSeq);
-
+                bundle.putString("SearchNote", strnote);
                 //將Bundle物件assign給intent
                 it.putExtras(bundle);
                 //startActivity(it);
                 startActivityForResult(it, REQUEST_Pdct);
                 finish();
-            }else if (fstrSearchType.equals("trans")){}
+            }else if (fstrSearchType.equals("trans")){
+                Bundle mBundle = new Bundle();
+                // 利用索引值取得點擊的項目內容。
+                String strID = libID[position].trim();//儲位
+                String strOldWh = libOldWh[position].trim();//料號
+                String strNewWh = libNewWh[position].trim();//入庫數量
+                String strSeq = libSeq[position].trim();//序號
+                String strQty = libQty[position].trim();//序號
+                String strnote = libnote[position].trim();//註解
+                //mBundle.putString("ID", strID);
+                //mBundle.putString("Name", strName);
+                //mBundle.putString("Qty", strQty);
+
+                Intent it = new Intent(php_search01.this,op5004_1.class);
+
+                //new一個Bundle物件，並將要傳遞的資料傳入
+                Bundle bundle = new Bundle();
+                //bundle.putDouble("SearchType","");
+                bundle.putString("SearchAprt",fstrAprt);
+                bundle.putString("SearchInNo", fstrInNo);
+                bundle.putString("SearchPdct", strID);
+                bundle.putString("SearchOldWh", strOldWh);
+                bundle.putString("SearchNewWh", strNewWh);
+                bundle.putString("SearchQty", strQty);
+                bundle.putString("SearchSeq", strSeq);
+                bundle.putString("SearchNote", strnote);
+                //將Bundle物件assign給intent
+                it.putExtras(bundle);
+                //startActivity(it);
+                startActivityForResult(it, REQUEST_Pdct);
+                finish();
+            }
             else if(fstrSearchType.equals("pdct"))
             {
                 String strID = libID[position].trim();
@@ -339,8 +378,8 @@ public class php_search01 extends AppCompatActivity {
                     params.put("stSearchMast","out_mast");
                 }else if(fstrSearchType.equals("trans"))
                 {
-                    params.put("stSearchAprt", "");
-                    params.put("stSearchInNo", "");
+                    params.put("stSearchAprt", fstrAprt);
+                    params.put("stSearchInNo", fstrInNo);
                     params.put("stSearchMast","trans");
                 }else if (fstrSearchType.equals("pdct"))
                 {
@@ -399,7 +438,12 @@ public class php_search01 extends AppCompatActivity {
             String[] lib_NAME = new String[dataInput.length()];
             String[] lib_Qty = new String[dataInput.length()];
             String[] lib_Seq = new String[dataInput.length()];
+            String[] lib_note = new String[dataInput.length()];
             String[] libAllData = new String[dataInput.length()];
+            String[] lib_oldwh= new String[dataInput.length()];
+            String[] lib_newwh = new String[dataInput.length()];
+
+
             for (int i=0; i<dataInput.length(); i++) {
                 JSONObject lib = dataInput.getJSONObject(i);
                 if (fstrSearchType.equals("Pdct_In") || fstrSearchType.equals("Pdct_Out"))
@@ -408,13 +452,17 @@ public class php_search01 extends AppCompatActivity {
                     lib_NAME[i] = lib.getString("Item02");
                     lib_Qty[i] = lib.getString("Item03");
                     lib_Seq[i] = lib.getString("Item04");
+                    lib_note[i]= lib.getString("Item05");
                     libAllData[i] = String.format(lib.getString("Item01")+"  |  "+lib.getString("Item02")+"  |  "+lib.getString("Item03"));
                 }else if (fstrSearchType.equals("trans")) {
                     lib_ID[i] = lib.getString("Item01");
-                    lib_NAME[i] = lib.getString("Item02");
-                    lib_Qty[i] = lib.getString("Item03");
-                    lib_Seq[i] = lib.getString("Item04");
-                    libAllData[i] = String.format(lib.getString("Item01") + "  |  " + lib.getString("Item04") + "\n" + lib.getString("Item02") + "  |  " + lib.getString("Item03"));
+                    lib_oldwh[i] = lib.getString("Item02");
+                    lib_newwh[i] = lib.getString("Item03");
+                    lib_Qty[i] = lib.getString("Item04");
+                    lib_Seq[i] = lib.getString("Item05");
+                    lib_note[i] = lib.getString("Item06");
+
+                    libAllData[i] = String.format( lib.getString("Item02") + "  |  " + lib.getString("Item03")+ "\n"+lib.getString("Item01")  );
                 }
                 else
                 {
@@ -428,6 +476,9 @@ public class php_search01 extends AppCompatActivity {
             libName =lib_NAME;//傳給全域變數暫存
             libQty =lib_Qty;//傳給全域變數暫存
             libSeq =lib_Seq;//傳給全域變數暫存
+            libnote=lib_note;
+            libOldWh=lib_oldwh;
+            libNewWh=lib_newwh;
             return libAllData;
         } catch (JSONException e) {
             //TODO Auto-generated catch block
