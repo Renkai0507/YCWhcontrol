@@ -459,7 +459,17 @@ public class op5005 extends AppCompatActivity {
                 break;
         }
     }
-
+    public void SetColorbyZero(TextView obj)
+    {
+        double num = Double.valueOf(obj.getText().toString());
+        if(num<=0)
+        {
+            obj.setTextColor(Color.RED);
+        }else
+        {
+            obj.setTextColor(Color.GRAY);
+        }
+    }
 
 
     // 利用 Volley 實現 POST 請求
@@ -499,6 +509,7 @@ public class op5005 extends AppCompatActivity {
                                 mTxvUnit.setText(stUnit);
                                 mTxvSafeQty.setText(stSafeQty);
                                 mTxvTotal.setText(stTotal);
+                                SetColorbyZero(mTxvTotal);
                                 //mTxvNowQty.setText(stNowQty);
 
                             }

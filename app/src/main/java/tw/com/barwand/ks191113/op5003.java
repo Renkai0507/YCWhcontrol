@@ -493,6 +493,7 @@ public class op5003 extends AppCompatActivity {
                                 mTxvUnit.setText(stUnit);
                                 mTxvSafeQty.setText(stSafeQty);
                                 mTxvTotal.setText(stTotal);
+
                                 //mTxvNowQty.setText(stNowQty);
 
                             }

@@ -3,10 +3,12 @@ package tw.com.barwand.ks191113;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.View;
@@ -238,25 +240,47 @@ public class op5001 extends AppCompatActivity {
             }
         });
 
-        mEdtQty.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View view, int i, KeyEvent keyEvent) {
-                if (i == KeyEvent.KEYCODE_ENTER && keyEvent.getAction() == KeyEvent.ACTION_UP) {
-                    if ( mEdtInNo.getText().toString().equals("") || mEdtWhNo.getText().toString().equals("") ||
-                            mEdtPdctNo.getText().toString().equals("") || mEdtQty.getText().toString().equals("")||mTxvPdctName1.getText().toString().equals("") )
-                    {
-                        Errbeep(getApplicationContext(),"單號、儲位、料號、品號、數量不可為空，請確認!!",1000,true,1000);
-                    }else
-                    {
-                        volley_post_insert(mEdtInNo.getText().toString(),mEdtWhNo.getText().toString(),mEdtPdctNo.getText().toString(),mEdtQty.getText().toString(),mEdtNote.getText().toString());
-                        mEdtPdctNo.requestFocus();
-                    }
-
-                    return true;
-                }
-                return false;
-            }
-        });
+//        mEdtQty.setOnKeyListener(new View.OnKeyListener() {
+//            @Override
+//            public boolean onKey(View view, int i, KeyEvent keyEvent) {
+//                if (i == KeyEvent.KEYCODE_ENTER && keyEvent.getAction() == KeyEvent.ACTION_UP) {
+//                    if ( mEdtInNo.getText().toString().equals("") || mEdtWhNo.getText().toString().equals("") ||
+//                            mEdtPdctNo.getText().toString().equals("") || mEdtQty.getText().toString().equals("")||mTxvPdctName1.getText().toString().equals("") )
+//                    {
+//                        Errbeep(getApplicationContext(),"單號、儲位、料號、品號、數量不可為空，請確認!!",1000,true,1000);
+//                    }else
+//                    {
+//                        if(UnderZero())
+//                        {
+//                            AlertDialog.Builder ad=new AlertDialog.Builder(op5001.this);
+//                            ad.setTitle("超出庫存量");
+//                            ad.setMessage("確定要繼續出庫嗎?");
+//                            ad.setPositiveButton("是", new DialogInterface.OnClickListener() {//退出按鈕
+//                                public void onClick(DialogInterface dialog, int i) {
+//                                    // TODO Auto-generated method stub
+//                                    volley_post_insert(mEdtInNo.getText().toString(),mEdtWhNo.getText().toString(),mEdtPdctNo.getText().toString(),mEdtQty.getText().toString(),mEdtNote.getText().toString());
+//                                    mEdtPdctNo.requestFocus();
+//                                }
+//                            });
+//                            ad.setNegativeButton("否",new DialogInterface.OnClickListener() {
+//                                public void onClick(DialogInterface dialog, int i) {
+//                                    //不退出不用執行任何操作
+//                                }
+//                            });
+//                            ad.show();//顯示對話框
+//                        }
+//                        else
+//                        {
+//                            volley_post_insert(mEdtInNo.getText().toString(),mEdtWhNo.getText().toString(),mEdtPdctNo.getText().toString(),mEdtQty.getText().toString(),mEdtNote.getText().toString());
+//                            mEdtPdctNo.requestFocus();
+//                        }
+//                    }
+//
+//                    return true;
+//                }
+//                return false;
+//            }
+//        });
 
 
         mBtnSearch01.setOnClickListener(new View.OnClickListener() {
@@ -280,11 +304,11 @@ public class op5001 extends AppCompatActivity {
         mBtnSearch02.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if ( mEdtInNo.getText().toString().equals("") )
-                {
-                    Errbeep(getApplicationContext(),"單號不可空，請確認!!",1000,true,1000);
-                }else
-                {
+//                if ( mEdtInNo.getText().toString().equals("") )
+//                {
+//                    Errbeep(getApplicationContext(),"單號不可空，請確認!!",1000,true,1000);
+//                }else
+//                {
                     Intent it = new Intent(op5001.this,php_search01.class);
 
                     //new一個Bundle物件，並將要傳遞的資料傳入
@@ -299,7 +323,7 @@ public class op5001 extends AppCompatActivity {
                     it.putExtras(bundle);
                     //startActivity(it);
                     startActivityForResult(it, REQUEST_Pdct);
-                }
+//                }
 
             }
         });
@@ -313,8 +337,30 @@ public class op5001 extends AppCompatActivity {
                 Errbeep(getApplicationContext(),"單號、儲位、料號、品號、數量不可為空，請確認!!",1000,true,1000);
             }else
             {
-                volley_post_insert(mEdtInNo.getText().toString(),mEdtWhNo.getText().toString(),mEdtPdctNo.getText().toString(),mEdtQty.getText().toString(),mEdtNote.getText().toString());
-                mEdtPdctNo.requestFocus();
+                if(UnderZero())
+                {
+                    AlertDialog.Builder ad=new AlertDialog.Builder(op5001.this);
+                    ad.setTitle("超出庫存量");
+                    ad.setMessage("確定要繼續嗎?");
+                    ad.setPositiveButton("是", new DialogInterface.OnClickListener() {//退出按鈕
+                        public void onClick(DialogInterface dialog, int i) {
+                            // TODO Auto-generated method stub
+                            volley_post_insert(mEdtInNo.getText().toString(),mEdtWhNo.getText().toString(),mEdtPdctNo.getText().toString(),mEdtQty.getText().toString(),mEdtNote.getText().toString());
+                            mEdtPdctNo.requestFocus();
+                        }
+                    });
+                    ad.setNegativeButton("否",new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int i) {
+                            //不退出不用執行任何操作
+                        }
+                    });
+                    ad.show();//顯示對話框
+                }
+                else
+                {
+                    volley_post_insert(mEdtInNo.getText().toString(),mEdtWhNo.getText().toString(),mEdtPdctNo.getText().toString(),mEdtQty.getText().toString(),mEdtNote.getText().toString());
+                    mEdtPdctNo.requestFocus();
+                }
             }
             }
         });
@@ -334,6 +380,18 @@ public class op5001 extends AppCompatActivity {
 //        });
 
     }
+    public boolean UnderZero()
+    {
+        double Outqty =Integer.valueOf(mEdtQty.getText().toString().trim());
+        double Nowqty =Double.valueOf(mTxvNowQty.getText().toString().trim());
+
+       if (Nowqty-Outqty<0)
+       {
+           return true;
+       }
+       return false;
+    }
+
     // 連接 layout 上的物件
     public void initComponent() {
         mTxvResult = (TextView) findViewById(R.id.txvResult);
@@ -516,8 +574,11 @@ public class op5001 extends AppCompatActivity {
                                 mTxvPdctName2.setText(stPdctName2);
                                 mTxvUnit.setText(stUnit);
                                 mTxvSafeQty.setText(stSafeQty);
+                                stNowQty=stNowQty.equals("")?"0":stNowQty;
                                 mTxvNowQty.setText(stNowQty);
+                                SetColorbyZero(mTxvNowQty);
                                 mTxvtotalQty.setText(stTotal);
+                                SetColorbyZero(mTxvtotalQty);
                                 mTxvResult.setText("");
 
                             }
@@ -590,6 +651,17 @@ public class op5001 extends AppCompatActivity {
         }
         return result;
     }
+    public void SetColorbyZero(TextView obj)
+    {
+        double num = Double.valueOf(obj.getText().toString());
+        if(num<=0)
+        {
+            obj.setTextColor(Color.RED);
+        }else
+        {
+            obj.setTextColor(Color.GRAY);
+        }
+    }
 
     // 利用 Volley 實現 POST 請求
     private void volley_post_insert(final String str_in_no,final String str_wh,final String str_pdct,final String str_qty,final String str_note) {
@@ -617,7 +689,12 @@ public class op5001 extends AppCompatActivity {
                             if (stMsg.equals("OK"))
                             {
                                 mTxvNowQty.setText(new JSONArray(response).getJSONObject(i-1).getString("Item01"));
+                                //
+                                //數量小於0顯示紅字
+                                SetColorbyZero(mTxvNowQty);
+
                                 mTxvtotalQty.setText( new JSONArray(response).getJSONObject(i-1).getString("Item02"));
+                                SetColorbyZero(mTxvtotalQty);
                                 OKbeep(getApplicationContext(),"儲存成功!!",1000,true,1000);
                                 mEdtQty.setText("");
                                 mEdtNote.setText("");

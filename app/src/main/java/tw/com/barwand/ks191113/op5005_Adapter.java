@@ -7,9 +7,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-/**
- * Created by RENKAI on 2020/1/2.
- */
+
 
 public class op5005_Adapter extends BaseAdapter {
     private String[] ElementsData ;   //資料

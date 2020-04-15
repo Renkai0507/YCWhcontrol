@@ -368,18 +368,18 @@ public class php_search01 extends AppCompatActivity {
                 if (fstrSearchType.equals("Pdct_In"))
                 {
                     params.put("stSearchAprt", fstrAprt);
-                    params.put("stSearchInNo", fstrInNo);
+//                    params.put("stSearchInNo", fstrInNo);
                     params.put("stSearchMast","in_mast");
 
                 }else if (fstrSearchType.equals("Pdct_Out"))
                 {
                     params.put("stSearchAprt", fstrAprt);
-                    params.put("stSearchInNo", fstrInNo);
+//                    params.put("stSearchInNo", fstrInNo);
                     params.put("stSearchMast","out_mast");
                 }else if(fstrSearchType.equals("trans"))
                 {
                     params.put("stSearchAprt", fstrAprt);
-                    params.put("stSearchInNo", fstrInNo);
+//                    params.put("stSearchInNo", fstrInNo);
                     params.put("stSearchMast","trans");
                 }else if (fstrSearchType.equals("pdct"))
                 {

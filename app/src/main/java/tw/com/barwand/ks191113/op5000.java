@@ -240,24 +240,24 @@ public class op5000 extends AppCompatActivity {
         });
 
 
-        mEdtQty.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View view, int i, KeyEvent keyEvent) {
-                if (i == KeyEvent.KEYCODE_ENTER && keyEvent.getAction() == KeyEvent.ACTION_UP) {
-                    if (mEdtInNo.getText().toString().equals("") || mEdtWhNo.getText().toString().equals("") ||
-                            mEdtPdctNo.getText().toString().equals("") || mEdtQty.getText().toString().equals("")||mTxvPdctName1.getText().toString().equals("") )
-                    {
-                        Errbeep(getApplicationContext(),"入庫單位、單號、儲位、料號、品名、數量不可為空，請確認!!",1000,true,1000);
-                    }else
-                    {
-                        volley_post_insert(mEdtInNo.getText().toString(),mEdtWhNo.getText().toString(),mEdtPdctNo.getText().toString(),mEdtQty.getText().toString(),mEdtNote.getText().toString());
-                        mEdtPdctNo.requestFocus();
-                    }
-                    return true;
-                }
-                return false;
-            }
-        });
+//        mEdtQty.setOnKeyListener(new View.OnKeyListener() {
+//            @Override
+//            public boolean onKey(View view, int i, KeyEvent keyEvent) {
+//                if (i == KeyEvent.KEYCODE_ENTER && keyEvent.getAction() == KeyEvent.ACTION_UP) {
+//                    if (mEdtInNo.getText().toString().equals("") || mEdtWhNo.getText().toString().equals("") ||
+//                            mEdtPdctNo.getText().toString().equals("") || mEdtQty.getText().toString().equals("")||mTxvPdctName1.getText().toString().equals("") )
+//                    {
+//                        Errbeep(getApplicationContext(),"入庫單位、單號、儲位、料號、品名、數量不可為空，請確認!!",1000,true,1000);
+//                    }else
+//                    {
+//                        volley_post_insert(mEdtInNo.getText().toString(),mEdtWhNo.getText().toString(),mEdtPdctNo.getText().toString(),mEdtQty.getText().toString(),mEdtNote.getText().toString());
+//                        mEdtPdctNo.requestFocus();
+//                    }
+//                    return true;
+//                }
+//                return false;
+//            }
+//        });
 
         mBtnSearch01.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -279,11 +279,7 @@ public class op5000 extends AppCompatActivity {
         mBtnSearch02.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (mEdtInNo.getText().toString().equals("") )
-                {
-                    Errbeep(getApplicationContext(),"單號不可空，請確認!!",1000,true,1000);
-                }else
-                {
+
                     Intent it = new Intent(op5000.this,php_search01.class);
 
                     //new一個Bundle物件，並將要傳遞的資料傳入
@@ -291,14 +287,14 @@ public class op5000 extends AppCompatActivity {
                     //bundle.putDouble("SearchType","");
                     bundle.putString("SearchType", "Pdct_In");
                     bundle.putString("SearchAprt",fstrEmpNo);
-                    bundle.putString("SearchInNo", mEdtInNo.getText().toString());
+                    bundle.putString("SearchInNo", "");
                     bundle.putString("SearchInQty", mEdtQty.getText().toString());
 
                     //將Bundle物件assign給intent
                     it.putExtras(bundle);
                     //startActivity(it);
                     startActivityForResult(it, REQUEST_Pdct);
-                }
+
 
             }
         });
@@ -479,7 +475,17 @@ public class op5000 extends AppCompatActivity {
                 break;
         }
     }
-
+    public void SetColorbyZero(TextView obj)
+    {
+        double num = Double.valueOf(obj.getText().toString());
+        if(num<=0)
+        {
+            obj.setTextColor(Color.RED);
+        }else
+        {
+            obj.setTextColor(Color.GRAY);
+        }
+    }
 
 
     // 利用 Volley 實現 POST 請求
@@ -518,9 +524,11 @@ public class op5000 extends AppCompatActivity {
                                 mTxvPdctName2.setText(stPdctName2);
                                 mTxvUnit.setText(stUnit);
                                 mTxvSafeQty.setText(stSafeQty);
+                                stNowQty=stNowQty.equals("")?"0":stNowQty;
                                 mTxvNowQty.setText(stNowQty);
                                 mTxvTotalqty.setText(stTotalQty);
-
+                                SetColorbyZero(mTxvNowQty);
+                                SetColorbyZero(mTxvTotalqty);
                             }
                             else if (stMsg.equals("No-Data")){
                                  Errbeep(getApplicationContext(),"無此料號，請確認!!",1000,true,1000);
@@ -618,6 +626,8 @@ public class op5000 extends AppCompatActivity {
                             {
                                 mTxvNowQty.setText(new JSONArray(response).getJSONObject(i-1).getString("Item01"));
                                 mTxvTotalqty.setText(new JSONArray(response).getJSONObject(i-1).getString("Item02"));
+                                SetColorbyZero(mTxvNowQty);
+                                SetColorbyZero(mTxvTotalqty);
                                 OKbeep(getApplicationContext(),"儲存成功!!",1000,true,1000);
                                 mEdtQty.setText("");
                                 mTxvResult.setText("");

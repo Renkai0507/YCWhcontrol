@@ -29,7 +29,7 @@ import java.util.Map;
 
 import static tw.com.barwand.ks191113.GlobalVariable.Errbeep;
 
-public class input_dialog extends AppCompatActivity {
+public class input_dialog extends AppCompatActivity  {
     RequestQueue mQueue;
     String mUrl = "";
     Button mbtnSure,mbtnCancel;

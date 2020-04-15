@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -309,7 +310,17 @@ public class op5000_1 extends AppCompatActivity {
                 break;
         }
     }
-
+    public void SetColorbyZero(TextView obj)
+    {
+        double num = Double.valueOf(obj.getText().toString());
+        if(num<=0)
+        {
+            obj.setTextColor(Color.RED);
+        }else
+        {
+            obj.setTextColor(Color.GRAY);
+        }
+    }
 
 
     // 利用 Volley 實現 POST 請求
@@ -352,6 +363,8 @@ public class op5000_1 extends AppCompatActivity {
                                 mTxvUnit.setText(stUnit);
                                 mTxvSafeQty.setText(stSafeQty);
                                 mTxvNowQty.setText(stNowQty);
+                                SetColorbyZero(mTxvNowQty);
+
                                 mEdtnote.setText(fstrnote);
                             }
                             else
@@ -432,6 +445,7 @@ public class op5000_1 extends AppCompatActivity {
                             if (stMsg.equals("OK"))
                             {
                                 mTxvNowQty.setText(new JSONArray(response).getJSONObject(i-1).getString("Item01"));
+                                SetColorbyZero(mTxvNowQty);
                                 if (fstrWorkType.equals("Update"))
                                 {
                                     mEdtQty.setText(mEdtUpdQty.getText().toString());

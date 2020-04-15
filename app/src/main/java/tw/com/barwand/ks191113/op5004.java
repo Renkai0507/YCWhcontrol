@@ -3,10 +3,12 @@ package tw.com.barwand.ks191113;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.View;
@@ -234,8 +236,30 @@ public class op5004 extends AppCompatActivity {
                         }
                         else
                         {
-                            volley_post_insert(mEdtInNo.getText().toString() ,mEdtwhold.getText().toString(),mEdtwhnew.getText().toString(),mEdtPdctNo.getText().toString(),mEdtQty.getText().toString(),mEdtNote.getText().toString());
-                            mEdtPdctNo.requestFocus();
+                            if(UnderZero())
+                            {
+                                AlertDialog.Builder ad=new AlertDialog.Builder(op5004.this);
+                                ad.setTitle("即將超出庫存量");
+                                ad.setMessage("確定要繼續嗎?");
+                                ad.setPositiveButton("是", new DialogInterface.OnClickListener() {//退出按鈕
+                                    public void onClick(DialogInterface dialog, int i) {
+                                        // TODO Auto-generated method stub
+                                        volley_post_insert(mEdtInNo.getText().toString() ,mEdtwhold.getText().toString(),mEdtwhnew.getText().toString(),mEdtPdctNo.getText().toString(),mEdtQty.getText().toString(),mEdtNote.getText().toString());
+                                        mEdtPdctNo.requestFocus();
+                                    }
+                                });
+                                ad.setNegativeButton("否",new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int i) {
+                                        //不退出不用執行任何操作
+                                    }
+                                });
+                                ad.show();//顯示對話框
+                            }
+                            else
+                            {
+                                volley_post_insert(mEdtInNo.getText().toString() ,mEdtwhold.getText().toString(),mEdtwhnew.getText().toString(),mEdtPdctNo.getText().toString(),mEdtQty.getText().toString(),mEdtNote.getText().toString());
+                                mEdtPdctNo.requestFocus();
+                            }
                         }
                     }
                     return true;
@@ -314,8 +338,31 @@ public class op5004 extends AppCompatActivity {
                 }
                 else
                 {
-                    volley_post_insert(mEdtInNo.getText().toString() ,mEdtwhold.getText().toString(),mEdtwhnew.getText().toString(),mEdtPdctNo.getText().toString(),mEdtQty.getText().toString(),mEdtNote.getText().toString());
-                    mEdtPdctNo.requestFocus();
+                    if(UnderZero())
+                    {
+                        AlertDialog.Builder ad=new AlertDialog.Builder(op5004.this);
+                        ad.setTitle("超出庫存量");
+                        ad.setMessage("確定要繼續嗎?");
+                        ad.setPositiveButton("是", new DialogInterface.OnClickListener() {//退出按鈕
+                            public void onClick(DialogInterface dialog, int i) {
+                                // TODO Auto-generated method stub
+                                volley_post_insert(mEdtInNo.getText().toString() ,mEdtwhold.getText().toString(),mEdtwhnew.getText().toString(),mEdtPdctNo.getText().toString(),mEdtQty.getText().toString(),mEdtNote.getText().toString());
+                                mEdtPdctNo.requestFocus();
+                            }
+                        });
+                        ad.setNegativeButton("否",new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int i) {
+                                //不退出不用執行任何操作
+                            }
+                        });
+                        ad.show();//顯示對話框
+                    }
+                    else
+                    {
+                        volley_post_insert(mEdtInNo.getText().toString() ,mEdtwhold.getText().toString(),mEdtwhnew.getText().toString(),mEdtPdctNo.getText().toString(),mEdtQty.getText().toString(),mEdtNote.getText().toString());
+                        mEdtPdctNo.requestFocus();
+                    }
+
                 }
 
             }
@@ -336,6 +383,17 @@ public class op5004 extends AppCompatActivity {
 //            }
 //        });
 
+    }
+    public boolean UnderZero()
+    {
+        double Outqty =Integer.valueOf(mEdtQty.getText().toString().trim());
+        double Nowqty =Double.valueOf(mTxvoldqty.getText().toString().trim());
+
+        if (Nowqty-Outqty<0)
+        {
+            return true;
+        }
+        return false;
     }
     // 連接 layout 上的物件
     public void initComponent() {
@@ -511,7 +569,17 @@ public class op5004 extends AppCompatActivity {
         }
     }
 
-
+    public void SetColorbyZero(TextView obj)
+    {
+        double num = Double.valueOf(obj.getText().toString());
+        if(num<=0)
+        {
+            obj.setTextColor(Color.RED);
+        }else
+        {
+            obj.setTextColor(Color.GRAY);
+        }
+    }
 
     // 利用 Volley 實現 POST 請求
     private void volley_post_pdct(final String str_wh,final  String str_newWh,final String str_pdct) {
@@ -551,9 +619,16 @@ public class op5004 extends AppCompatActivity {
                                 mTxvUnit.setText(stUnit);
                                 mTxvSafeQty.setText(stSafeQty);
                                 mTxvoldqty.setText(stoldQty);
+                                //
+                                //數量小於0顯示紅字
+                               SetColorbyZero(mTxvoldqty);
                                 mTxvTotal.setText(stTotal);
+                                SetColorbyZero(mTxvTotal);
                                 mTxvResult.setText("");
                                 mTxvNowQty.setText(stnewqty);
+                                //
+                                //數量小於0顯示紅字
+                            SetColorbyZero(mTxvNowQty);
                             }
                              else if (stMsg.equals("No-Data")){
                                  Errbeep(getApplicationContext(),"無此料號，請確認!!",1000,true,1000);
@@ -645,10 +720,16 @@ public class op5004 extends AppCompatActivity {
                                 mTxvNowQty.setText(new JSONArray(response).getJSONObject(i-1).getString("Item02"));
                                 mTxvTotal.setText( new JSONArray(response).getJSONObject(i-1).getString("Item03"));
 
+                                //
+                                //數量小於0顯示紅字
+                              SetColorbyZero(mTxvoldqty);
+                                SetColorbyZero(mTxvNowQty);
+                                SetColorbyZero(mTxvTotal);
                                 OKbeep(getApplicationContext(),"儲存成功!!",1000,true,1000);
                                 mEdtQty.setText("");
                                 mTxvResult.setText("");
                                 mEdtNote.setText("");
+
 
                             } else if (stMsg.equals("NG4")) {
                                 Errbeep(getApplicationContext(),"倉儲位置錯誤!",1000,true,1000);

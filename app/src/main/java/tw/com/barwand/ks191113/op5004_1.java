@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -313,7 +314,17 @@ public class op5004_1 extends AppCompatActivity {
                 break;
         }
     }
-
+    public void SetColorbyZero(TextView obj)
+    {
+        double num = Double.valueOf(obj.getText().toString());
+        if(num<=0)
+        {
+            obj.setTextColor(Color.RED);
+        }else
+        {
+            obj.setTextColor(Color.GRAY);
+        }
+    }
 
 
     // 利用 Volley 實現 POST 請求
@@ -360,8 +371,12 @@ public class op5004_1 extends AppCompatActivity {
                                 mTxvoldqty.setText(stOldQty);
                                 mTxvTotal.setText(stTotalQty);
                                 mTxvNowQty.setText(stNewQty);
-
                                 mEdtnote.setText(fstrnote);
+                                //
+                                //數量小於0顯示紅字
+                              SetColorbyZero(mTxvoldqty);
+                                SetColorbyZero(mTxvNowQty);
+                                SetColorbyZero(mTxvTotal);
                             }
                             else
                             {
@@ -443,6 +458,10 @@ public class op5004_1 extends AppCompatActivity {
                             {
                                 mTxvNowQty.setText(new JSONArray(response).getJSONObject(i-1).getString("Item02"));
                                 mTxvoldqty.setText(new JSONArray(response).getJSONObject(i-1).getString("Item01"));
+                                //
+                                //數量小於0顯示紅字
+                                SetColorbyZero(mTxvoldqty);
+                                SetColorbyZero(mTxvNowQty);
                                 if (fstrWorkType.equals("Update"))
                                 {
                                     mEdtQty.setText(mEdtUpdQty.getText().toString());
