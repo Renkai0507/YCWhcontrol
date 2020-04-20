@@ -415,12 +415,7 @@ public class op5002 extends AppCompatActivity {
 
     }
     public void ClearAll() {
-//        mEdtInAprt.setText("");
-//        mEdtInNo.setText("");
-//        mEdtWhNo.setText("");
-//        mEdtPdctNo.setText("");
-//        mEdtQty.setText("");
-//        mTxvWhName.setText("");
+
         mTxvPdctName1.setText("");
         mTxvPdctName2.setText("");
         mTxvUnit.setText("");
@@ -588,6 +583,7 @@ public class op5002 extends AppCompatActivity {
                                 mTxvResult.setText("");
                             }
                              else if (stMsg.equals("No-Data")){
+
                                  Errbeep(getApplicationContext(),"無此料號，請確認!!",1000,true,1000);
                                  mEdtPdctNo.requestFocus();
                                  mEdtPdctNo.selectAll();
